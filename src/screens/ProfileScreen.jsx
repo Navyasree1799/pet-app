@@ -146,7 +146,9 @@ const ProfileScreen = ({ navigation }) => {
       <TextInput
         style={styles.input}
         value={petObj.name || ""}
-        onChangeText={(text) => onChange("name", text)}
+        onChangeText={(text) =>
+          /^[a-zA-Z\s]*$/.test(text) && onChange("name", text)
+        }
         selectionColor={"#5188E3"}
         placeholder="Enter Name"
         placeholderTextColor="#B7B7B7"
