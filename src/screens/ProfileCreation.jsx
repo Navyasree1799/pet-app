@@ -120,7 +120,9 @@ const ProfileCreation = ({ navigation }) => {
         <TextInput
           style={styles.input}
           value={pet.name}
-          onChangeText={(text) => setPet({ ...pet, name: text })}
+          onChangeText={(text) =>
+            /^[a-zA-Z\s]*$/.test(text) && setPet({ ...pet, name: text })
+          }
           placeholder="Enter your pet name"
           selectionColor={"#5188E3"}
           placeholderTextColor="#B7B7B7"
