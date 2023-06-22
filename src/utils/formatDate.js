@@ -1,14 +1,17 @@
 export function formatTime(timestamp) {
-  const date = new Date(timestamp);
-  const options = { hour: "2-digit", minute: "2-digit", hour12: true };
-  return date.toLocaleTimeString(undefined, options);
+  if (typeof timestamp !== "string") {
+    const date = new Date(timestamp);
+    const options = { hour: "2-digit", minute: "2-digit", hour12: true };
+    return date.toLocaleTimeString(undefined, options);
+  } else {
+    return "Choose Time";
+  }
 }
 export function formatDate(timestamp) {
-  if(timestamp){
-    const date = new Date(timestamp);
-    return date.toLocaleDateString();
-  }else{
-    return ""
-  }
-  
+   if (typeof timestamp !== "string") {
+     const date = new Date(timestamp);
+     return date.toLocaleDateString();
+   } else {
+     return "";
+   }
 }
