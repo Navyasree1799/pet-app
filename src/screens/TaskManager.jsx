@@ -21,7 +21,11 @@ import useAuth from "../utils/hooks/useAuth";
 import alert from "../utils/alert";
 import Task from "../components/Task";
 import { setCollectionData } from "../utils/firebaseFunctions";
-import { screenHeight, screenWidth, validateObj } from "../utils/helpfulFunctions";
+import {
+  screenHeight,
+  screenWidth,
+  validateObj,
+} from "../utils/helpfulFunctions";
 import DatePicker from "../components/DatePicker";
 
 Notifications?.setNotificationHandler({
@@ -75,7 +79,7 @@ const TaskManager = ({ route }) => {
   const [task, setTask] = useState(route.params.category);
   const [isVisible, setIsVisible] = useState(false);
   const [date, setDate] = useState(new Date());
-  const [update,setUpdate] = useState(false)
+  const [update, setUpdate] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const frequencyList = ["Daily", "Monthly", "Specific Date"];
@@ -126,21 +130,22 @@ const TaskManager = ({ route }) => {
 
     // }
 
-    console.log("OnchangeTime: ",t)
+    console.log("OnchangeTime: ", t);
 
     setShowTimePicker(false);
     setTaskObj({ ...taskObj, time: t.nativeEvent.timestamp });
   }
 
   function onChangeDate(t) {
-    console.log("OnDate changed",t)
+    console.log("OnDate changed", t);
     setShowDatePicker(false);
     setTaskObj({ ...taskObj, date: t.nativeEvent.timestamp });
   }
 
   async function handleTaskCreate() {
     setIsVisible(false);
-    const notificationId = Platform.OS!=="web"? await scheduleNotification(taskObj):"";
+    const notificationId =
+      Platform.OS !== "web" ? await scheduleNotification(taskObj) : "";
     let categoryObj = categoryList;
     console.log(categoryList);
     categoryObj[task.title.toLowerCase()].tasks.push({
@@ -157,14 +162,14 @@ const TaskManager = ({ route }) => {
     }
   }
 
-    async function handleTaskUpdate() {
-      setIsVisible(false);
-      await handleDelete(update)
-      await handleTaskCreate()
-    }
+  async function handleTaskUpdate() {
+    setIsVisible(false);
+    await handleDelete(update);
+    await handleTaskCreate();
+  }
 
   function handlePress(task) {
-    setUpdate(task)
+    setUpdate(task);
     setTaskObj(task);
     setIsVisible(true);
   }
@@ -176,9 +181,10 @@ const TaskManager = ({ route }) => {
 
   async function handleDelete(selectedTask) {
     console.log(selectedTask);
-    Platform.OS!=="web"&& await Notifications.cancelScheduledNotificationAsync(
-      selectedTask.notificationId
-    );
+    Platform.OS !== "web" &&
+      (await Notifications.cancelScheduledNotificationAsync(
+        selectedTask.notificationId
+      ));
     let categoryObj = categoryList;
     let tasks = task.tasks.filter(
       (obj) => obj.notificationId !== selectedTask.notificationId
@@ -193,9 +199,8 @@ const TaskManager = ({ route }) => {
       setToggleRender(!toggleRender);
       setCategoryList(categoryObj);
     }
-    
+
     // setTask(categoryObj[task.title.toLowerCase()]);
-      
   }
 
   function renderTasks() {
@@ -241,7 +246,11 @@ const TaskManager = ({ route }) => {
             setUpdate(null);
             setIsVisible(false);
           }}
-          containerStyle={{width:screenWidth,maxWidth:600,alignSelf:"center"}}
+          containerStyle={{
+            width: screenWidth,
+            maxWidth: 600,
+            alignSelf: "center",
+          }}
           modalProps={{}}
           isVisible={isVisible}
         >
@@ -253,7 +262,10 @@ const TaskManager = ({ route }) => {
             <Input
               placeholder="Enter title"
               value={taskObj.title}
-              onChangeText={(text) => setTaskObj({ ...taskObj, title: text })}
+              onChangeText={(text) =>
+                /^[a-zA-Z\s]*$/.test(text) &&
+                setTaskObj({ ...taskObj, title: text })
+              }
             />
 
             {showTimePicker ? (
@@ -279,11 +291,9 @@ const TaskManager = ({ route }) => {
                 icon={
                   <MaterialIcons name="watch-later" size={24} color="white" />
                 }
-                title={`${
-                  taskObj.time
-                    ? formatDate(taskObj.date) + " " + formatTime(taskObj.time)
-                    : "Choose time"
-                } `}
+                title={
+                  formatDate(taskObj.date) + " " + formatTime(taskObj.time)
+                }
               />
             )}
 
@@ -326,7 +336,7 @@ const TaskManager = ({ route }) => {
             />
             {update ? (
               <Button
-                onPress={()=>handleTaskUpdate()}
+                onPress={() => handleTaskUpdate()}
                 // disabled={
                 //   !validateObj(
                 //     taskObj.frequency === "Daily"
@@ -341,7 +351,6 @@ const TaskManager = ({ route }) => {
                 containerStyle={{ paddingHorizontal: 10, marginBottom: 20 }}
                 icon={<MaterialIcons name="post-add" size={24} color="white" />}
                 title="Update Task"
-                
               />
             ) : (
               <Button
@@ -379,9 +388,9 @@ const TaskManager = ({ route }) => {
 const styles = StyleSheet.create({
   empty: {
     flex: 1,
-    minHeight: screenHeight * .9,
+    minHeight: screenHeight * 0.9,
     alignItems: "center",
-    justifyContent:"center"
+    justifyContent: "center",
   },
   container: {
     flex: 1,
